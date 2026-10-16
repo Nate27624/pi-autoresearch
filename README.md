@@ -1,36 +1,39 @@
-# π Autoresearch
+# π Autoresearch — agent-directed research
 
-A small, reproducible autoresearch-inspired experiment testing **next-decimal-digit prediction** of pi from preceding digits. Pi is fully computable; this experiment tests whether a short-context learned predictor discovers usable local predictive signal.
+This project studies whether a next-digit model trained on preceding decimal digits of pi can beat held-out predictive baselines, while controlling for overfitting. **Pi is computable; this is a test of learned short-context predictive structure, not the computability of pi itself.**
 
-## Run locally (Python 3.10+)
+Inspired by [Karpathy's autoresearch](https://github.com/karpathy/autoresearch). It follows the agent-driven pattern: **propose code change → commit → train for equal compute → evaluate on validation → keep/revert → repeat**. See [program.md](program.md), the agent's operating instructions.
+
+## Start on your local computer (GPU recommended)
 ```bash
+git clone https://github.com/Nate27624/pi-autoresearch.git
+cd pi-autoresearch
 python -m venv .venv
-# macOS/Linux: source .venv/bin/activate
-# Windows PowerShell: .venv\\Scripts\\Activate.ps1
+# activate your environment; Windows PowerShell:
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python data.py --n 10000 --source pi --out data/pi_10000.npy
-python train.py --data data/pi_10000.npy --steps 100
-python search.py --data data/pi_10000.npy --steps 100
+python data.py --n 100000 --source pi --out data/pi_100000.npy
+python data.py --n 100000 --source random --out data/random_100000.npy
+python train.py --data data/pi_100000.npy --steps 1000
 ```
-For a random-digit control dataset:
-```bash
-python data.py --n 10000 --source random --seed 2026 --out data/random_10000.npy
-python search.py --data data/random_10000.npy --steps 100 --output-dir runs/random
-```
-For a final evaluation only, freeze parameters recorded in `runs/sweep/best.json`, then call `train.py` with the same `--context`, `--embed`, `--hidden`, `--lr`, `--steps`, and `--test`. Do not optimize using test scores.
 
-## Design
-- Dataset: generated local pi digits with `mpmath`, no downloaded datasets required.
-- Split: contiguous 80% train / 10% validation / 10% sealed test; no cross-split windows.
-- Model: PyTorch embedding + MLP next-token classifier.
-- Evaluation: validation cross-entropy (primary), accuracy (secondary), frequency and uniform baselines.
-- Search: six reproducible hyperparameter candidates, logging all results. CUDA used when available.
-- See [program.md](program.md) for scientific controls, test discipline, and extension suggestions.
+Launch a code-editing CLI agent, such as Codex, **inside this repository** and give it this prompt:
 
-## What counts as success?
-10% is the **expected** accuracy of uniform independent guesses, not an exact finite-sample result. Test statistical uncertainty, replicate on independent digit regions, and compare against random-digit controls before asserting predictive structure. Even genuine finite-range predictability would not establish that pi is non-normal.
+> Read program.md completely. Set up a fresh autoresearch branch. First implement and validate a strict 300-second training-time budget in train.py and establish pi/random baselines. Then autonomously propose edits to train.py, train both candidates under identical budgets, compare held-out validation cross-entropy, commit winners, revert losers, log every run, and continue until manually stopped. Never touch the final test set during exploration.
 
-## Notes
-- No remote training is started by committing this code.
-- `runs/` and `data/` are gitignored to keep models and generated data out of version control.
+The repository's original `search.py` is a **legacy fixed sweep**, not the autonomous engine; it is kept as a quick smoke-test convenience. The agent itself is responsible for edits and the research loop, as in upstream autoresearch. The initial `train.py` supports step-limited training only; the instructions require the agent to introduce and validate a timed loop before comparing architectures. No unattended GPU workload is started by this GitHub commit.
+
+## Measurement
+- Generated pi digits: `data.py` uses mpmath; verify long runs with a second source before publication.
+- Contiguous train/validation/test 80/10/10 with independent windows per split.
+- Primary metric: held-out validation cross-entropy in nats/digit; lower is better.
+- Secondary: next-digit accuracy; reference uniform CE is `ln(10)` and uniform accuracy expectation is 10%.
+- A matched pseudorandom digit corpus serves as a negative control.
+- A sealed test split must be used only after research is frozen.
+
+## Contents
+- `program.md` — autonomous agent research specification.
+- `train.py` — model and optimizer, **agent-editable**.
+- `data.py`, `tests/` — data and integrity checks; not agent-editable during search.
+- `search.py` — optional static six-candidate baseline only, **not** autoresearch.
