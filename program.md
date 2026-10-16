@@ -1,26 +1,37 @@
-# Autoresearch protocol
+# PI Autoresearch — autonomous agent instructions
 
-Objective: Discover whether a sequence model predicts **unseen** decimal digits of pi better than controls.
-Do not mistake deterministic computability of pi for short-context next-digit predictability.
+You are an autonomous ML researcher. Your objective is to discover a predictor of previously unseen decimal digits of pi with **lower validation cross-entropy** than the current best under equal compute. Study this file and the repository, then continue experimenting until the human stops you. This is NOT a static hyperparameter sweep.
 
-## Immutable rules
-1. Decimal digits start after the decimal point (first digit = 1).
-2. Use contiguous train (first 80%), validation (next 10%) and test (last 10%). No shuffling across splits. Input contexts must be wholly within each split.
-3. Tune only on validation cross-entropy (primary), report accuracy (secondary). Never inspect test outcomes while iterating.
-4. Compare against uniform random guessing (10% expectation, CE ln(10)), train-frequency prior, and matched truly pseudorandom control data with identical splits, training budget, and selection procedure.
-5. Multiple comparisons matter: optimize on validation, freeze architecture and hyperparameters, evaluate test once. Replicate across different *non-overlapping pi ranges* for stronger evidence, and use confidence intervals/effect sizes rather than isolated accuracy spikes.
-6. Log every experiment (including failures), seed, data-source length, code revision, hyperparameters, metrics, and runtime. Do not claim evidence from unverified results.
-7. Changes to this evaluation protocol are separate preregistered experiments, not retroactive adjustments.
+## Setup
+1. Create a new branch `autoresearch/<date-run>` from main; never experiment on main.
+2. Read README.md, data.py, train.py, and this document. Run the unit tests.
+3. Install requirements; generate a pinned dataset using `python data.py --n 100000 --source pi --out data/pi_100000.npy`. Verify the pi prefix. Generate `data/random_100000.npy` as matched negative control.
+4. Run a baseline with `python train.py --data data/pi_100000.npy --steps 1000 --output runs/baseline.json`; verify the script emits finite validation metrics. Use a matching random-digit control run. Record hardware and baseline runtime.
+5. Establish the fixed budget of **300 seconds per candidate on the same machine**. The baseline train.py currently uses a fixed number of steps, NOT a five-minute timer; before relying on cross-architecture comparisons, implement and validate a bounded wall-clock training loop in train.py. Startup and evaluation may be outside the budget, but all candidates must use the identical measured training budget. Record actual training seconds and seeds. If modifying the timing loop alters baseline performance, rerun the baseline.
+6. Initialize `results.tsv` (untracked) with `commit\tval_ce\tval_accuracy\tcontrol_ce\ttrain_seconds\tstatus\tdescription`.
 
-## Autoresearch workflow
-- Run `python search.py --data data/pi_10000.npy --steps 100` for a deterministic sweep.
-- Inspect `runs/sweep/results.csv` and `runs/sweep/best.json`.
-- Change model architecture or search candidates, then repeat using same validation protocol.
-- If no robust validation improvement over frequency baseline and random controls, record the negative result.
-- For a **single frozen finalist**, manually run `python train.py ... --test` with the selected configuration; report test results honestly, including failures.
+## Change boundaries
+- **Agent may edit train.py only** for scientific experiments (including architecture, context length, losses, optimizers, training strategy, sampling, and hyperparameters).
+- Do not edit data.py, tests/, or the evaluation split/metric to improve a score. Keep the 80/10/10 contiguous split, split-local contexts, and validation CE invariant.
+- Do not inspect the final test split or report a final test score during iterative research. Do not turn on --test during exploration.
+- Do not leak pi's known algorithm or positional information into features, pretrained checkpoints, training labels, or evaluation logic. This asks whether preceding *digits alone* help predict the next, not whether a program can calculate pi.
+- You may read papers or reason about models to propose novel experiments. Git changes must be explainable and reproducible.
 
-## Scientific caveats
-- The sweep is a bounded fixed candidate search, **not** a continuously autonomous agent. An LLM can propose and commit additional candidates externally while preserving this protocol.
-- mpmath generates digits locally, not via a downloaded verified reference. Verify long datasets against an independent source before publication.
-- This baseline uses small context-embedding MLPs; Transformers/LSTMs are future experiments, not implemented yet.
-- Deterministic algorithms can emit seemingly random digits; outperforming random control on short holdout alone does not prove a global pattern or non-normality.
+## Autonomous loop — repeat until stopped
+1. Examine `results.tsv`, last improvement, current best code and recent failures. Formulate a testable hypothesis.
+2. Edit **train.py** to implement ONE meaningful candidate: for example a causal Transformer, LSTM, convolutional sequence model, better embeddings, optimizer, conditioning strategy, regularizer, or context length.
+3. Commit candidate code to the run branch with an informative message.
+4. Run the same fixed 300-second train budget, capture stdout/stderr in `runs/latest.log`, and enforce a 10-minute external timeout including startup/evaluation. Extract validation CE and accuracy. Run matched random control with the SAME candidate and training budget, and record its CE.
+5. If the candidate crashes, inspect failure, optionally repair it, log crash. If it improves pi validation CE and passes data-leakage checks, mark `keep`. Otherwise mark `discard` and revert to prior best commit (preserving untracked results).
+6. Append each attempt — including crashes and rejected candidates — to `results.tsv`. Keep all runs auditable. Track comparison to uniform CE = ln(10) and training-frequency CE. Do not interpret noise as discovery.
+7. Repeat without asking the user for each iteration. Try nontrivial architecture changes, not only a preset list.
+
+## Evidence threshold
+- Search uses validation only, which becomes adaptively overfit after enough experiments.
+- Once a candidate is frozen, perform ONE held-out test, and compare against equally tuned random controls, independent pi digit regions, and a preregistered success threshold/confidence interval.
+- Quantify effect sizes and uncertainty; accuracy above 10% on a single finite split is insufficient. Predictive gains would not prove pi is non-normal.
+- Report negative findings without exaggeration.
+
+## Agent launch
+On a machine with compute and an **agent capable of shell access and editing code** (e.g. Codex CLI), open this project, instruct the agent: `Read program.md, set up a fresh autoresearch run, and then execute the autonomous loop continuously until I stop you.`
+Merely storing this file on GitHub does not start a running agent, and neither the GitHub connector nor GitHub repository by itself provides GPU compute. Do not claim that a continuous run started until the local agent process actually launches.
