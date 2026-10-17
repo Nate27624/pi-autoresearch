@@ -45,7 +45,7 @@ Some microbes learned to harvest sunlight and release oxygen. Around 2.4 billion
 
 Eventually complex cells, multicellular organisms, and unfamiliar ecosystems appeared. During the Cambrian Period, beginning around 541 million years ago, the fossil record shows a remarkable diversification of animal forms and ways of living. This was a long evolutionary process, not life suddenly appearing out of nowhere. [S04]
 
-Life moved into oceans, onto land, and into the air. Forests changed the atmosphere. Predators and prey reshaped one another. Repeated mass extinctions disrupted what had seemed permanent. About 66 million years ago, a catastrophic event ended the reign of non-avian dinosaurs, creating evolutionary opportunities for other lineages, including mammals.
+Life moved into oceans, onto land, and into the air. Forests changed the atmosphere. Predators and prey reshaped one another. Repeated mass extinctions disrupted what had seemed permanent. About 66 million years ago, a catastrophic event ended the reign of non-avian dinosaurs, creating evolutionary opportunities for other lineages, including mammals. [S15]
 
 Evolution had no script that guaranteed humans. We are one contingent branch of a much larger, unfinished tree.
 
@@ -55,7 +55,7 @@ For most of human evolution, there was no singular human species. Different huma
 
 They did not instantly become modern city dwellers. For nearly all of our species' existence, humans lived without governments, factories, nations, or written records. The archaeological evidence suggests extraordinary diversity: coastal peoples, inland foragers, mobile communities, complex networks of exchange, and symbolic expression. We should resist calling these societies primitive. Their skills were adapted to worlds most of us could barely survive.
 
-Humans moved across Africa and into other continents over many thousands of years. They encountered other humans, including Neanderthals, and some populations interbred. Over generations, people reached islands, deserts, polar regions, and eventually the Americas. There was no single day when humanity suddenly understood its world.
+Humans moved across Africa and into other continents over many thousands of years. They encountered other humans, including Neanderthals, and some populations interbred. [S16] Over generations, people reached islands, deserts, polar regions, and eventually the Americas. There was no single day when humanity suddenly understood its world.
 
 But something powerful had emerged. Humans could learn from people who had died, teach children what they had never personally discovered, and coordinate around imagined possibilities. A river could become a boundary. A story could become an obligation. A stone could become a tool, then an heirloom, then a sacred object.
 
@@ -95,6 +95,10 @@ The routes later called the Silk Roads were not one road and not only about silk
 
 As religions spread, they changed in contact with local communities. As empires expanded, their subjects changed the empires back. There was never a single center from which all innovation radiated. There were many overlapping worlds, connected at different speeds.
 
+And behind the empire maps lay the work of countless ordinary people. Farmers carried seeds across ecological borders. Weavers preserved knowledge in patterns. Midwives, healers, builders, and sailors passed down practical experimentation without publishing treatises. In China, statecraft and technical innovation changed across successive dynasties. Across the Indian subcontinent, competing kingdoms, literary traditions, and commercial communities linked inland worlds with maritime ones. West African trade in gold, salt, books, and textiles connected towns across the Sahel and Sahara. Across the Andes, political systems managed difficult high-altitude environments. Pacific seafarers read stars, winds, and currents to connect islands that looked impossibly far apart.
+
+The surviving historical record does not distribute credit fairly. Some places preserved stone; others built in wood. Some elites commissioned inscriptions; many societies transmitted knowledge orally. A history that counts only written monuments mistakes a property of the archive for a property of human achievement.
+
 The greatest technology was sometimes a ship or a horse. Sometimes it was translation: discovering how to communicate across a difference.
 
 ### 13:40 — 15:25 | Connections become catastrophes
@@ -125,7 +129,7 @@ By the early twentieth century, humanity had become capable of changing the plan
 
 In 1914, a regional crisis escalated into the First World War, fought by empires and peoples across continents. Industrial killing devastated populations, and the peace helped produce new states alongside unresolved grievances. In 1918, an influenza pandemic brought additional global loss.
 
-Then economic crisis, militant nationalism, imperial violence, and totalitarian movements helped drive the world into another war. The Second World War involved combat, occupation, mass displacement, and the Holocaust—the systematic murder of six million Jews by Nazi Germany and its collaborators, alongside the persecution and murder of other groups. The war ended in 1945, after the use of atomic bombs against Hiroshima and Nagasaki, exposing a new possibility: humanity could now destroy cities in a moment, and perhaps itself on an unprecedented scale.
+Then economic crisis, militant nationalism, imperial violence, and totalitarian movements helped drive the world into another war. The Second World War involved combat, occupation, mass displacement, and the Holocaust—the systematic murder of six million Jews by Nazi Germany and its collaborators, alongside the persecution and murder of other groups. [S17] The war ended in 1945, after the use of atomic bombs against Hiroshima and Nagasaki, exposing a new possibility: humanity could now destroy cities in a moment, and perhaps itself on an unprecedented scale.
 
 The United Nations was established in 1945 as governments sought mechanisms to prevent another world war. Its existence did not end conflict or injustice. [S11] The Cold War divided much of global politics, generated proxy wars, and placed nuclear annihilation at the heart of international strategy.
 
